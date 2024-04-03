@@ -19,23 +19,6 @@ jobs:
       - name: Checkout Master
         uses: actions/checkout@master
 
-      # 拉取web前端dist的代码
-      - name: Checkout Web Dist
-        uses: actions/checkout@v3
-        with:
-          repository: 'mouday/domain-admin-web'
-          ref: 'dist'
-          token: ${{ secrets.GH_PAT }}
-          path: 'domain_admin/public'
-
-      - name: Checkout Mini Dist
-        uses: actions/checkout@v3
-        with:
-          repository: 'mouday/domain-admin-mini'
-          ref: 'dist'
-          token: ${{ secrets.GH_PAT }}
-          path: 'domain_admin/public/m'
-
       - name: Set up Python
         uses: actions/setup-python@v3
         with:
@@ -49,46 +32,6 @@ jobs:
       - name: Build Dist
         run: |
             python setup.py sdist bdist_wheel --python-tag py2.py3
-
-      # 拉取前端最新的master代码
-      - name: Checkout Web Master
-        uses: actions/checkout@v3
-        with:
-          repository: 'mouday/domain-admin-web'
-          ref: 'master'
-          token: ${{ secrets.GH_PAT }}
-          path: 'domain_admin_web'
-
-      # https://github.com/a7ul/tar-action
-      # https://docs.github.com/zh/actions/learn-github-actions/contexts#github-context
-      - name: Compress action step Web
-        uses: a7ul/tar-action@v1.1.0
-        id: compress-web
-        with:
-          command: c
-          cwd: ./
-          files: |
-            ./domain_admin_web
-          outPath: ./dist/domain-admin-web-${{github.ref_name}}.tar.gz
-
-      # 拉取H5前端最新的master代码
-      - name: Checkout Mini Master
-        uses: actions/checkout@v3
-        with:
-          repository: 'mouday/domain-admin-mini'
-          ref: 'master'
-          token: ${{ secrets.GH_PAT }}
-          path: 'domain_admin_mini'
-
-      - name: Compress action step Mini
-        uses: a7ul/tar-action@v1.1.0
-        id: compress-mini
-        with:
-          command: c
-          cwd: ./
-          files: |
-            ./domain_admin_mini
-          outPath: ./dist/domain-admin-mini-${{github.ref_name}}.tar.gz
 
       - name: Release
         uses: softprops/action-gh-release@v1
