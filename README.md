@@ -31,3 +31,4 @@ assert china_calendar.is_workday('2024-04-04') == False
 类似的库：
 
 - [https://github.com/LKI/chinese-calendar](https://github.com/LKI/chinese-calendar)
+- [https://github.com/NateScarlet/holiday-cn](https://github.com/NateScarlet/holiday-cn)
